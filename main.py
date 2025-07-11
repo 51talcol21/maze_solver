@@ -237,6 +237,7 @@ def benchmark(solver_name, solver_func, *args, **kwargs):
         'time': end_time - start_time,
         'memory_kb': peak / 1024,
         'nodes_explored': result[2],
+        'path': result[1] if result[1] else "No path found.",
         'path_length': len(result[1]) if result[1] else 0,
         'found_path': result[1] is not None,
     }
@@ -312,6 +313,7 @@ def main():
             f.write(f"  Nodes explored: {stats['nodes_explored']}\n")
             f.write(f"  Time taken: {stats['time']:.6f} seconds\n")
             f.write(f"  Peak memory usage: {stats['memory_kb']:.2f} KB\n")
+            f.write(f"  Path taken: {stats['path']} KB\n")
             f.write('\n')
 
 if __name__ == '__main__':
