@@ -313,7 +313,7 @@ def main():
             f.write(f"  Nodes explored: {stats['nodes_explored']}\n")
             f.write(f"  Time taken: {stats['time']:.6f} seconds\n")
             f.write(f"  Peak memory usage: {stats['memory_kb']:.2f} KB\n")
-            f.write(f"  Path taken: {stats['path']} KB\n")
+            f.write(f"  Path taken: {stats['path']}\n")
             f.write('\n')
 
 if __name__ == '__main__':
