@@ -1,4 +1,4 @@
-use std::io::{BufRead, BufReader, Result};
+use std::io::{BufRead, BufReader, Result, Write};
 use std::fs::File;
 use std::collections::HashMap;
 use std::collections::VecDeque;
@@ -24,7 +24,7 @@ fn parse_input(filename: &str) -> Result<(Vec<Vec<u8>>, Point, Point)> {
             .filter(|s| s.chars().all(char::is_numeric))
             .map(|s| s.parse::<u8>().unwrap())
             .collect::<Vec<u8>>();
-        println!("{:?}", row);
+        // println!("{:?}", row);
         maze.push(row);
     }
     Ok((maze, start_point.unwrap(), end_point.unwrap()))
@@ -59,7 +59,6 @@ fn bfs_directions(maze: Vec<Vec<u8>>, start_point: Point, end_point: Point) -> O
 
     while let Some(Point(x,y)) = queue.pop_front() {
         // Check goal state
-        println!("{:?}", (x, y));
         if(x,y) == (end_point.0, end_point.1) {
             let mut path: Vec<String> = Vec::new();
             let mut current = end_point;
@@ -91,10 +90,19 @@ fn bfs_directions(maze: Vec<Vec<u8>>, start_point: Point, end_point: Point) -> O
     None
 }
 
+fn write_to_output(direction: Vec<String>) -> std::io::Result<()>{
+    let mut file = File::create("output.txt").expect("Unable to create file!");
+    file.write_all(direction.join(", ").as_bytes()).expect("Unable to write to file");
+    Ok(())
+}
+
 fn main() -> Result<()> {
     let (maze, start_point, end_point) = parse_input("../input.txt").unwrap();
-    println!("{:?} : {:?} : {:?}", maze, start_point, end_point);
+    // println!("{:?} : {:?} : {:?}", maze, start_point, end_point);
     let path_directions = bfs_directions(maze, start_point, end_point);
-    println!("{:?}", path_directions);
+    // println!("{:?}", path_directions);
+    if let Some(path) = path_directions {
+        write_to_output(path).expect("Could Not Write To File");
+    }
     Ok(())
 }
